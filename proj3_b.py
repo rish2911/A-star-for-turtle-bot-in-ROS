@@ -335,110 +335,114 @@ def initial():
 
 
 # %%
+def main():
+    Rat=1
+    initial()
 
-Rat=1
-initial()
+    # %%
+    goal_list
 
-# %%
-goal_list
+    # %%
 
-# %%
-
-##goal_cost = np.inf
-while(1):
-    if (Open_list.qsize()>0):
-        print('inside while')
-        r,node =pop(Closed_list, Open_list, All_list) ## pop works
-        print('all list length is', len(All_list))
-        if type(r) == str:
-            print('done/GOAL FOUND')
-            goal_id=node
-            # display_path(goal_id)
-            # display()
-            break
-        else:
-            print('popped')
-            movement(node, All_list, Open_list, rpm1,rpm2)
-    else:
-        print('open list empty')
-        break
-
-
-# %%
-#creating an empty canvas
-canvas = np.zeros((int(250/Rat),int(400/Rat),3),np.uint8)
-
-#list of all obstacles to put in canvas
-for c in allp_map: #change the name of the variable l
-    x = c[1]
-    y = c[0]
-    canvas[(x,y)]=[0,255,255] #assigning a yellow coloured pixel
-canvas = np.flipud(canvas)
-canvas_for_backtrack = canvas.copy()
-canvas_for_visited = canvas.copy()
-canvas_for_visited = cv2.resize(canvas_for_visited,(1200,750))
-#showing the obstacle map
-cv2.imshow('canvas',canvas)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-pygame.init()
-
-display_width = int(400/Rat)
-display_height = int(250/Rat)
-display_h = 250
-n = 2
-m = n
-s = n/Rat
-# gameDisplay = pygame.display.set_mode((display_width,display_height),0, 32, 0, 10)
-gameDisplay = pygame.display.set_mode((n*display_width,n*display_height))
-# gameDisplay = pygame.display.set_mode((1920,1080),flags, vsync =1)
-# gameDisplay = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-pygame.display.set_caption('Visited Nodes- Animation')
-black = (0,0,0)
-white = (255,255,255)
-Y = (255, 0,0)
-B = (0,255,0)
-# surf = pygame.surfarray.make_surface(canvas_for_visited)
-
-clock = pygame.time.Clock()
-done = True
-while done:
-    for event in pygame.event.get():  
-        if event.type == pygame.QUIT:  
-            done = False  
-    
-    gameDisplay.fill(black)
-    pygame.draw.circle(gameDisplay, B, (n*x_centre, n*(display_height-1-y_centre)), n*radius)
-    pygame.draw.polygon(gameDisplay, B, [(s*114,s*(display_h-1-209)),(s*35,s*(display_h-1-184)), (s*104,s*(display_h-1-99)), (s*79,s*(display_h-1-179))])
-    pygame.draw.polygon(gameDisplay, B, [(s*199,s*(display_h-1-59.6)),(s*234,s*(display_h-1-78.8)), (s*234,s*(display_h-1-119)), (s*200,s*(display_h-1-139)),(s*164,s*(display_h-1-119)),(s*164,s*(display_h-1-78.8))])
-    for i in range(len(All_list)):
-            p_id = All_list[i].parent_id
-            if(i>0):
-                x_start = All_list[p_id -1].node_loc[0]
-                y1_start = All_list[p_id -1].node_loc[1]
-                y_start = abs(display_height-1-y1_start)
-                # print(x_start, y_start)
+    ##goal_cost = np.inf
+    while(1):
+        if (Open_list.qsize()>0):
+            print('inside while')
+            r,node =pop(Closed_list, Open_list, All_list) ## pop works
+            print('all list length is', len(All_list))
+            if type(r) == str:
+                print('done/GOAL FOUND')
+                goal_id=node
+                # display_path(goal_id)
+                # display()
+                break
             else:
-                x_start = All_list[p_id].node_loc[0]
-                y1_start = All_list[p_id].node_loc[1]
-                y_start = abs(display_height-1-y1_start)
-            
-            x = All_list[i].node_loc[0]
-            y1 = All_list[i].node_loc[1]
-            y = abs(display_height-1-y1)
-            pygame.draw.line(gameDisplay, white, (n*x_start,n*y_start),(m*x,m*y), 1)
-            pygame.display.flip()
-            # pygame.time.wait(4)
+                print('popped')
+                movement(node, All_list, Open_list, rpm1,rpm2)
+        else:
+            print('open list empty')
+            break
 
-    ind = int(map_obs4[All_list[goal_id].node_loc[0], All_list[goal_id].node_loc[1],All_list[goal_id].node_loc[2]])
-    for i in range(len(x_a)-1):
-            pygame.draw.line(gameDisplay, Y, (n*x_a[i],n*(display_height-y_a[i])),(n*x_a[i+1],n*(display_height-y_a[i+1])), 5)
-            pygame.display.flip()
-            pygame.time.wait(4)
-    done = False
-    
-    pygame.time.wait(4000)
-    pygame.quit()
+def display():
+        # %%
+        #creating an empty canvas
+        canvas = np.zeros((int(250/Rat),int(400/Rat),3),np.uint8)
+
+        #list of all obstacles to put in canvas
+        for c in allp_map: #change the name of the variable l
+            x = c[1]
+            y = c[0]
+            canvas[(x,y)]=[0,255,255] #assigning a yellow coloured pixel
+        canvas = np.flipud(canvas)
+        canvas_for_backtrack = canvas.copy()
+        canvas_for_visited = canvas.copy()
+        canvas_for_visited = cv2.resize(canvas_for_visited,(1200,750))
+        #showing the obstacle map
+        cv2.imshow('canvas',canvas)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+        pygame.init()
+
+        display_width = int(400/Rat)
+        display_height = int(250/Rat)
+        display_h = 250
+        n = 2
+        m = n
+        s = n/Rat
+        # gameDisplay = pygame.display.set_mode((display_width,display_height),0, 32, 0, 10)
+        gameDisplay = pygame.display.set_mode((n*display_width,n*display_height))
+        # gameDisplay = pygame.display.set_mode((1920,1080),flags, vsync =1)
+        # gameDisplay = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        pygame.display.set_caption('Visited Nodes- Animation')
+        black = (0,0,0)
+        white = (255,255,255)
+        Y = (255, 0,0)
+        B = (0,255,0)
+        # surf = pygame.surfarray.make_surface(canvas_for_visited)
+
+        clock = pygame.time.Clock()
+        done = True
+        while done:
+            for event in pygame.event.get():  
+                if event.type == pygame.QUIT:  
+                    done = False  
+
+            gameDisplay.fill(black)
+            pygame.draw.circle(gameDisplay, B, (n*x_centre, n*(display_height-1-y_centre)), n*radius)
+            pygame.draw.polygon(gameDisplay, B, [(s*114,s*(display_h-1-209)),(s*35,s*(display_h-1-184)), (s*104,s*(display_h-1-99)), (s*79,s*(display_h-1-179))])
+            pygame.draw.polygon(gameDisplay, B, [(s*199,s*(display_h-1-59.6)),(s*234,s*(display_h-1-78.8)), (s*234,s*(display_h-1-119)), (s*200,s*(display_h-1-139)),(s*164,s*(display_h-1-119)),(s*164,s*(display_h-1-78.8))])
+            for i in range(len(All_list)):
+                    p_id = All_list[i].parent_id
+                    if(i>0):
+                        x_start = All_list[p_id -1].node_loc[0]
+                        y1_start = All_list[p_id -1].node_loc[1]
+                        y_start = abs(display_height-1-y1_start)
+                        # print(x_start, y_start)
+                    else:
+                        x_start = All_list[p_id].node_loc[0]
+                        y1_start = All_list[p_id].node_loc[1]
+                        y_start = abs(display_height-1-y1_start)
+
+                    x = All_list[i].node_loc[0]
+                    y1 = All_list[i].node_loc[1]
+                    y = abs(display_height-1-y1)
+                    pygame.draw.line(gameDisplay, white, (n*x_start,n*y_start),(m*x,m*y), 1)
+                    pygame.display.flip()
+                    # pygame.time.wait(4)
+
+            ind = int(map_obs4[All_list[goal_id].node_loc[0], All_list[goal_id].node_loc[1],All_list[goal_id].node_loc[2]])
+            for i in range(len(x_a)-1):
+                    pygame.draw.line(gameDisplay, Y, (n*x_a[i],n*(display_height-y_a[i])),(n*x_a[i+1],n*(display_height-y_a[i+1])), 5)
+                    pygame.display.flip()
+                    pygame.time.wait(4)
+            done = False
+
+            pygame.time.wait(4000)
+            pygame.quit()
+            
+if __name__ == "__main__":
+    main()
+    display()
 
 
